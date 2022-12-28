@@ -1,5 +1,6 @@
 package com.devsuperior.dscliente.dto;
 
+import com.devsuperior.dscliente.entities.Client;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PastOrPresent;
 
@@ -23,6 +24,15 @@ public class ClientDto {
         this.income = income;
         this.birthDate = birthDate;
         this.children = children;
+    }
+
+    public ClientDto(Client entity) {
+        this.id = entity.getId();
+        this.name = entity.getName();
+        this.cpf = entity.getCpf();
+        this.income = entity.getIncome();
+        this.birthDate = entity.getBirthDate();
+        this.children = entity.getChildren();
     }
 
     public Long getId() {

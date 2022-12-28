@@ -21,7 +21,7 @@ public class ClientService {
     @Transactional(readOnly = true)
     public Page<ClientDto> findAll(Pageable pageable) {
         Page<Client> result = clientRepository.findAll(pageable);
-        return result.map(this::clientToClientDto);
+        return result.map(ClientDto::new);
     }
 
     @Transactional(readOnly = true)
@@ -29,33 +29,24 @@ public class ClientService {
         Client client = clientRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Resource not found")
         );
-        return clientToClientDto(client);
+        return new ClientDto(client);
     }
 
     @Transactional
     public ClientDto insert(ClientDto dto) {
-        Client client = clientRepository.save(new Client(
-                dto.getId(),
-                dto.getName(),
-                dto.getCpf(),
-                dto.getIncome(),
-                dto.getBirthDate(),
-                dto.getChildren()
-        ));
-        return clientToClientDto(client);
+        Client client = new Client();
+        copyClientDtoToEntity(dto,client);
+        client = clientRepository.save(client);
+        return new ClientDto(client);
     }
 
     @Transactional
     public ClientDto update(Long id, ClientDto dto) {
         try {
             Client client = clientRepository.getReferenceById(id);
-            client.setName(dto.getName());
-            client.setCpf(dto.getCpf());
-            client.setIncome(dto.getIncome());
-            client.setBirthDate(dto.getBirthDate());
-            client.setChildren(dto.getChildren());
+            copyClientDtoToEntity(dto, client);
             client = clientRepository.save(client);
-            return clientToClientDto(client);
+            return new ClientDto(client);
         }
         catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException("Resource not found");
@@ -72,14 +63,11 @@ public class ClientService {
         }
     }
 
-    public ClientDto clientToClientDto(Client client) {
-        return new ClientDto(
-                client.getId(),
-                client.getName(),
-                client.getCpf(),
-                client.getIncome(),
-                client.getBirthDate(),
-                client.getChildren()
-        );
+    private static void copyClientDtoToEntity(ClientDto dto, Client client) {
+        client.setName(dto.getName());
+        client.setCpf(dto.getCpf());
+        client.setIncome(dto.getIncome());
+        client.setBirthDate(dto.getBirthDate());
+        client.setChildren(dto.getChildren());
     }
 }
