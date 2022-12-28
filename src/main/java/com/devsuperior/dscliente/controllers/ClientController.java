@@ -24,7 +24,7 @@ public class ClientController {
         return ResponseEntity.ok(clientService.findAll(pageable));
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<ClientDto> findById(@PathVariable Long id) {
         return ResponseEntity.ok(clientService.findById(id));
     }
@@ -35,5 +35,11 @@ public class ClientController {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(dto.getId()).toUri();
         return ResponseEntity.created(uri).body(dto);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ClientDto> update(@PathVariable Long id, @Valid @RequestBody ClientDto dto) {
+        dto = clientService.update(id, dto);
+        return ResponseEntity.ok(dto);
     }
 }
