@@ -24,6 +24,18 @@ public class ClientService {
         return clientToClientDto(client);
     }
 
+    public ClientDto insert(ClientDto dto) {
+        Client client = clientRepository.save(new Client(
+                dto.getId(),
+                dto.getName(),
+                dto.getCpf(),
+                dto.getIncome(),
+                dto.getBirthDate(),
+                dto.getChildren()
+        ));
+        return clientToClientDto(client);
+    }
+
     public ClientDto clientToClientDto(Client client) {
         return new ClientDto(
                 client.getId(),
@@ -33,6 +45,5 @@ public class ClientService {
                 client.getBirthDate(),
                 client.getChildren()
         );
-
     }
 }
