@@ -52,6 +52,11 @@ public class ClientService {
         return clientToClientDto(client);
     }
 
+    @Transactional
+    public void delete(Long id) {
+        clientRepository.deleteById(id);
+    }
+
     public ClientDto clientToClientDto(Client client) {
         return new ClientDto(
                 client.getId(),
