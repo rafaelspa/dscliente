@@ -19,6 +19,11 @@ public class ClientService {
         return result.map(this::clientToClientDto);
     }
 
+    public ClientDto findById(Long id) {
+        Client client = clientRepository.findById(id).get();
+        return clientToClientDto(client);
+    }
+
     public ClientDto clientToClientDto(Client client) {
         return new ClientDto(
                 client.getId(),
