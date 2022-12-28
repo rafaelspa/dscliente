@@ -8,11 +8,11 @@ import java.time.LocalDate;
 public class ClientDto {
 
     private Long id;
-    @NotBlank(message = "Name can not be blank")
+    @NotBlank(message = "Name cannot be blank")
     private String name;
     private String cpf;
     private String income;
-    @PastOrPresent(message = "Birth date can not be in the future")
+    @PastOrPresent(message = "Birth date cannot be in the future")
     private LocalDate birthDate;
     private Integer children;
 
